@@ -24,6 +24,18 @@ Python installed (depending on Lambda code)
 
 Weather API key (e.g., OpenWeatherMap)
 
+⚡Services used :
+
+IAM Role – Grants Lambda permission to access SNS and other AWS services.
+
+Amazon SNS – Sends notifications.
+
+Amazon EventBridge – Schedules Lambda.
+
+AWS Lambda – Runs code to fetch/process weather data.
+
+✅ Flow : IAM -> SNS -> EventBridge ->Lambda
+
 🛠️ Step-by-Step Setup
 
 1️⃣ Create IAM Role
@@ -59,7 +71,7 @@ Note the ARN (e.g., arn:aws:sns:ap-south-1:123456789012:WeatherAlerts).
 
 ![Architecture](images/img-2.png)
 
-2️3️⃣ Subscribe to the Topic
+3️⃣ Subscribe to the Topic
 
 In the SNS Topic, click Create Subscription.
 
