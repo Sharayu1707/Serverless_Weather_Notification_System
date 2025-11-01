@@ -1,30 +1,23 @@
 # Serverless_Weather_Notification_System
 
-🔹 Overview
+## Overview
 
 The Serverless Weather Notification System is an AWS-based application that fetches weather data from an external API and sends notifications (via email or SMS) using AWS services.
 
 It is fully serverless, leveraging AWS Lambda, SNS, and EventBridge to automate notifications without managing servers.
 
-🏗️ Architecture
+## Architecture 
 
-Components:
+EventBridge (Scheduler)
+        ↓ 
+AWS Lambda (Weather Fetch + Logic)
+        ↓
+Amazon SNS (Notification)
+        ↓
+Subscribers (Email / SMS)
 
- AWS Lambda: Executes code to fetch weather data.
- Amazon SNS: Sends notifications to subscribers via email or SMS.
- Amazon EventBridge: Schedules Lambda executions periodically.
- Weather API: Provides weather data (like OpenWeatherMap API).
 
-
-✅ Prerequisites
-
-AWS account with proper permissions
-
-Python installed (depending on Lambda code)
-
-Weather API key (e.g., OpenWeatherMap)
-
-⚡Services used :
+## Services used 
 
 IAM Role – Grants Lambda permission to access SNS and other AWS services.
 
@@ -34,11 +27,19 @@ Amazon EventBridge – Schedules Lambda.
 
 AWS Lambda – Runs code to fetch/process weather data.
 
-✅ Flow : IAM -> SNS -> EventBridge ->Lambda
 
-🛠️ Step-by-Step Setup
+## Prerequisites
 
-1️⃣ Create IAM Role
+AWS account with proper permissions
+
+Python installed (depending on Lambda code)
+
+Weather API key (e.g., OpenWeatherMap)
+
+
+## Step-by-Step Setup
+
+### Step 1: Create IAM Role
 
 Purpose: To give permission for Lambda to publish messages to SNS and write logs.
 
@@ -60,7 +61,7 @@ Click Create Role
 
 ![Architecture](images/img-1.png)
 
-2️⃣ Create an SNS Topic
+### Step 2: Create an SNS Topic
 
 Go to AWS SNS Console.
 
@@ -71,7 +72,7 @@ Note the ARN (e.g., arn:aws:sns:ap-south-1:123456789012:WeatherAlerts).
 
 ![Architecture](images/img-2.png)
 
-3️⃣ Subscribe to the Topic
+### Step 3: Subscribe to the Topic
 
 In the SNS Topic, click Create Subscription.
 
@@ -86,7 +87,7 @@ Confirm the subscription via the link sent to your email or SMS.
 
 ![Architecture](images/img-3.png)
 
-4️⃣ Create a Lambda Function
+### Step 4: Create a Lambda Function
 
 ![Architecture](images/img-4.png)
 
@@ -102,11 +103,11 @@ Attach policy: AWSLambdaBasicExecutionRole
 
 Attach policy: AmazonSNSFullAccess (or least privilege to publish to SNS)
 
-5️⃣ Add Lambda Code
+### Step 5: Add Lambda Code
 
 ⚠️ Update SNS_ARN, API_KEY, and CITY with your values.
 
-6️⃣ Configure EventBridge Rule
+Step 6: Configure EventBridge Rule
 
 Go to Amazon EventBridge → Rules → Create Rule.
 
@@ -121,7 +122,7 @@ Save the rule.
 
 ⏰ EventBridge Role: Automatically triggers Lambda at the scheduled time, ensuring weather notifications are sent daily without manual intervention.
 
-7️⃣ Test Lambda
+### Step 7: Test Lambda
 
 Go to Lambda → Test → Configure test event.
 
@@ -129,7 +130,33 @@ Use default JSON ({}) → Click Test.
 
 Check your email or SMS for the weather update.
 
+## Advantages
 
-🎯 Conclusion
+Fully automated – Sends weather updates without manual work.
 
-This system provides automated, serverless weather notifications using AWS Lambda, SNS, and EventBridge. It is scalable, cost-effective, and requires no server management. ✅
+Low cost – Uses serverless AWS services, so you only pay per use.
+
+Scalable – Can handle thousands of notifications easily.
+
+Reliable – EventBridge and SNS ensure no message is missed.
+
+Easy to maintain – No server or infrastructure to manage.
+
+Real-time alerts – Users get instant updates via email or SMS.
+
+## Disadvantages
+
+Limited message format – SNS messages are text-only (no rich templates).
+
+Cold start delay – Lambda may take a few seconds for the first run.
+
+API dependency – If the weather API fails, no alert will be sent.
+
+Limited free tier – SNS or API calls may cost more with heavy usage.
+
+Difficult to debug – Must check CloudWatch logs for errors.
+
+
+## Conclusion
+
+This system provides automated, serverless weather notifications using AWS Lambda, SNS, and EventBridge. It is scalable, cost-effective, and requires no server management.
